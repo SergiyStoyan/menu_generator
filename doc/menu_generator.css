@@ -1,0 +1,62 @@
+span.h2 {margin:10 0 0 0; font-size1:21px; }
+span.h3 {margin:5 0 0 20; font-size1:19px;}
+span.h4 {margin:2 0 0 40; font-size1:17px; }
+span.h5 {margin:0 0 0 60; font-size1:15px; }
+
+span.inline{
+    display: inline;
+}
+
+.contentContainer{
+    border-top:2px solid #ccc;
+    vertical-align:top;
+    display1:inline-block;
+    padding: 0 50 0 50;
+    vertical-align:top;
+    text-align:left;
+    width:auto;
+}
+
+.menuContainer{
+    max-width: 30%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    position: fixed;
+    overflow: auto;     
+    vertical-align:top;
+    text-align:left;
+    background-color: #fafafa; 
+    display:block;
+}
+
+.menu {
+    padding: 0 20 20 20;
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */  
+    display:block;
+    overflow: auto; 
+    white-space: nowrap;
+}
+
+.menuItem {
+    text-decoration: none;
+    font-size1: 18px;
+    color: #000;
+    display: block;
+    transition: 0.3s;
+    cursor: pointer;
+}
+.menuItem:hover {
+    color: #900;
+    background-color: #ddd;
+}
+.menuItem.current {
+    color: #d00;
+    background-color: #ddd;
+    font-weight1: bold;
+}
+
+.switchLink{
+    font-size: 12px;    
+}
+

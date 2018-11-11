@@ -1,0 +1,64 @@
+<html>
+<head>
+<title>JS Menu Generator</title>
+<link rel="stylesheet" type="text/css" href="main.css">
+<link rel="stylesheet" type="text/css" href="menu_generator.css">
+
+</head>
+<body>
+<div class='header'>
+<div class='mainHeader'>JS Menu Generator</div>
+</div>
+
+<div class='content'>
+<h1>Overview</h1>
+JS Menu Generator is a vanilla javascript that generates a dynamic menu from the HTML file where it is included in. 
+It was designed to work either online or locally. It was developed as a quick way to create documentation with context menu that equially can work both as web and local resource.
+<br>Tested on Chrome and IE.
+
+
+
+<h1>Requirements</h1>
+The HTML file must contain:
+<br>
+<br> - one &lt;div class='header'&gt;. It remains as is;
+<br> - one &lt;div class='content'&gt;. Only this one is parsed while building menu;
+<br> - one &lt;div class='footer'&gt;. It remains as is;
+<br>
+<br>
+ Every header tag like &lt;h1&gt;, &lt;h2&gt;... is considered as a beginning of an item. 
+ Header with higher numbers become children of the last header with less number.
+
+
+ <h1>Usage</h1>
+menu_generator.js must be embedded in the very end of HTML body.
+Also menu_generator.css must be linked.
+<p>Investigate the source code of this file for the rest clarifications.
+
+ <h1>Example</h1>
+ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus auctor turpis ut augue tincidunt congue. Aenean ac urna et ipsum dignissim fermentum consequat vitae magna. Sed id odio eget odio accumsan gravida vitae in risus. Donec augue enim, ultricies in lacus quis, porta malesuada libero. Etiam vel elit tempus, consequat purus eget, convallis dui. Nam eleifend purus non eros feugiat finibus. Quisque efficitur augue vel eros lacinia sagittis. Vestibulum vehicula, arcu id tincidunt tristique, nibh massa rhoncus justo, a elementum velit ante ac justo. Vivamus nec accumsan ante. Curabitur dignissim odio ac risus porttitor condimentum.
+ 
+ <h2>Fusce ut erat</h2>
+Fusce ut erat sed augue placerat bibendum convallis vel dolor. Donec dignissim sem velit, hendrerit scelerisque nisl blandit sed. Duis et auctor arcu. Integer vitae tellus a dui mattis faucibus a a risus. Nullam vulputate diam a risus dapibus vehicula. Sed tincidunt iaculis urna, eu fringilla risus ullamcorper sit amet. Aliquam sed venenatis nulla.
+
+<h3>Maecenas</h3>
+Maecenas in leo bibendum, sodales purus vitae, fringilla lectus. Proin feugiat placerat nisl vel vestibulum. Suspendisse suscipit molestie massa, pulvinar aliquet eros tempor sed. 
+<h3>Donec</h3>
+Donec hendrerit nunc vitae gravida faucibus. Aliquam ornare ante massa, sed luctus felis cursus et. Fusce gravida rhoncus iaculis. Vestibulum ut odio non leo lacinia eleifend. 
+<h3>Suspendisse</h3>
+Suspendisse sem libero, bibendum sit amet ex vitae, mollis mollis lorem. Maecenas sit amet mauris in purus finibus congue. Morbi eleifend enim ut ultrices finibus. Donec diam lacus, viverra sed massa nec, efficitur scelerisque leo. Mauris id lacus sem.
+<h4>Quisque quis</h4>
+Quisque quis erat ipsum. Aliquam rhoncus varius nunc. Mauris sed urna quis purus maximus bibendum. In eget ex nec lectus posuere rutrum. Cras egestas libero nec eros vehicula vehicula. Morbi orci dui, facilisis eget felis et, porttitor bibendum arcu. Fusce id mi et enim eleifend ultrices sit amet et tellus. Nunc nec ligula est. Integer hendrerit tempor dui, a vehicula lectus viverra non. Nam sed urna non mauris convallis malesuada. Vivamus tincidunt enim eu bibendum molestie. Proin tincidunt pulvinar fringilla.
+<h2>Proin vulputate</h2>
+Proin vulputate laoreet libero sit amet euismod. Duis at lorem venenatis, luctus elit id, posuere nulla. Vivamus eu nisi et libero ornare convallis nec non tortor. Nunc consequat, purus ac eleifend auctor, ante nulla semper eros, ac sagittis libero orci a orci. Aliquam tempus nunc quam, in porta sapien porta a. Cras venenatis efficitur erat, eget vehicula felis cursus nec. Duis et velit erat. Fusce elementum quis metus in euismod. Etiam eleifend varius odio. Nulla facilisi. Praesent ut tincidunt enim.
+</div>
+
+<div class='footer'>
+        <script src='copyright.js'></script>
+        &nbsp;2018,&nbsp;&nbsp;<a href='mailto:sergey.stoyan@gmail.com?Subject=PdfDocumentParser request' target='_top'>Sergey Stoyan</a>
+</div>
+
+<script src='menu_generator.js'></script>
+
+</body>
+</html>
