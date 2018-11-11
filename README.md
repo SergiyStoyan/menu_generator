@@ -10,7 +10,7 @@ Html body must have:
 - one ```<div class='footer'>```;
 
  Only ```<div class='content'>``` is parsed while building menu. 
- Every ```<h1>, <h2>```... tag becomes an item.
+ Every ```<h1>, <h2>...``` tag becomes an item.
  
  USAGE:
  This script must be embedded in the end of html body.
