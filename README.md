@@ -5,11 +5,12 @@ Tested on Chrome and IE.
 
 REQUIREMENTS:
 Html body must have: 
-- 1 <div class='header'>;
-- 1 <div class='content'>;
-- 1 <div class='footer'>;
- Only <div class='content'> is parsed while building menu. 
- Every <h1>, <h2>... tag becomes an item.
+- one ```<div class='header'>```;
+- one ```<div class='content'>```;
+- one ```<div class='footer'>```;
+
+ Only ```<div class='content'>``` is parsed while building menu. 
+ Every ```<h1>, <h2>```... tag becomes an item.
  
  USAGE:
  This script must be embedded in the end of html body.
