@@ -13,12 +13,12 @@ Html body must have:
  Only <div class='content'> is parsed while building menu. 
  Every <h1>, <h2>... tag becomes an item.
  
- USAGE:
- This script should be embedded in the end of html body.
- Also menu_generator.css should be linked.
+USAGE:
+Embed SCRIPT tag with menu_generator.js into the very end of HTML body.
+Additionaly, link menu_generator.css
  
- AUXILIARY:
- Open a containing html file with anchor '#_checkInternalLinks' to check it for broken internal links.
+AUXILIARY:
+Open a containing html file with anchor '#_checkInternalLinks' to check it for broken internal links.
 ************************************************************************/
 var convert = function(mode){
     var getItems = function(){
@@ -253,7 +253,7 @@ switch(anchorName){
         var internalAnchorNames = [];
         for(var i = 0; i < as.length; i++){
             if(as[i].href){
-                var m = as[i].href.match(/#(.*)/);
+                var m = as[i].href.match(/^\s*#(.*)/);
                 if(m)
                     internalLinks.push(m[1]);
             }
