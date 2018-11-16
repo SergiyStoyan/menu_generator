@@ -7,15 +7,18 @@ Tested on Chrome and IE.
 
 REQUIREMENTS:
 Html body must have: 
-- 1 <div class='header'>;
-- 1 <div class='content'>;
-- 1 <div class='footer'>;
+- one <div class='header'>;
+- one <div class='content'>;
+- one <div class='footer'>;
  Only <div class='content'> is parsed while building menu. 
  Every <h1>, <h2>... tag becomes an item.
  
  USAGE:
- This script must be embedded in the end of html body.
- Also menu_generator.css must be linked.
+ This script should be embedded in the end of html body.
+ Also menu_generator.css should be linked.
+ 
+ AUXILIARY:
+ Open a containing html file with anchor '#_checkInternalLinks' to check it for broken internal links.
 ************************************************************************/
 var convert = function(mode){
     var getItems = function(){
@@ -58,8 +61,8 @@ var convert = function(mode){
     };
     
     var setModeSwithers = function(){//alert(mode+(mode == '_collapsedContent'));
-        var switcherContainer = document.getElementsByClassName('switcherContainer')[0];
-        switcherContainer.innerHTML = '<a class="switchLink" href="#_plainHtml" title="If the page is not displayed properly, switch to the plain html.">plain html</a>&nbsp;|&nbsp;' + (mode == '_collapsedContent' ? '<a class="switchLink" href="#_entireContent" title="Switch to the entire content mode.">entire content</a>' : '<a class="switchLink" href="#_collapsedContent" title="Switch to the collapsed content mode.">collapsed content</a>');
+        var switchContainer = document.getElementsByClassName('switchContainer')[0];
+        switchContainer.innerHTML = '<a class="switchLink" href="#_plainHtml" title="If the page is not displayed properly, switch to the plain html.">plain html</a>&nbsp;|&nbsp;' + (mode == '_collapsedContent' ? '<a class="switchLink" href="#_entireContent" title="Switch to the entire content mode.">entire content</a>' : '<a class="switchLink" href="#_collapsedContent" title="Switch to the collapsed content mode.">collapsed content</a>');
     };
          
     var addMenu2Page = function(){       
@@ -90,9 +93,9 @@ var convert = function(mode){
         
         var menuContainer = document.createElement('div');
         menuContainer.classList.add("menuContainer");
-        var switcherContainer = document.createElement('div');
-        switcherContainer.classList.add('switcherContainer');
-        menuContainer.appendChild(switcherContainer);
+        var switchContainer = document.createElement('div');
+        switchContainer.classList.add('switchContainer');
+        menuContainer.appendChild(switchContainer);
         menuContainer.appendChild(menu);
         var content = document.getElementsByClassName('content')[0];
         content.parentNode.insertBefore(menuContainer, content);
@@ -243,6 +246,31 @@ switch(anchorName){
         anchorDiv.innerHTML = '<a class="switchLink" href="#" onclick="loadInMenuMode();" title="Switch to javascript generated document.">menu mode</a>';
         var body = document.getElementsByTagName('body')[0];
         body.insertBefore(anchorDiv, body.childNodes[0]);
+    break;
+    case '_checkInternalLinks':
+        var as = document.getElementsByTagName('a');
+        var internalLinks = [];
+        var internalAnchorNames = [];
+        for(var i = 0; i < as.length; i++){
+            if(as[i].href){
+                var m = as[i].href.match(/#(.*)/);
+                if(m)
+                    internalLinks.push(m[1]);
+            }
+            if(as[i].name){
+                internalAnchorNames.push(as[i].name);
+            }            
+        }
+        var brokenLinks = [];
+        for(var i = 0; i < internalLinks.length; i++){
+            if(internalAnchorNames.indexOf(internalLinks[i]) < 0)
+                brokenLinks.push(internalLinks[i]);
+        }
+        if(brokenLinks.length){
+            alert('There are broken internal links. They have been printed out on the console.');
+            console.log('Broken links:\r\n' + brokenLinks.join('\r\n'));
+        }else
+            alert('No broken internal link was found.');
     break;
     case '_entireContent':
         convert('_entireContent');
