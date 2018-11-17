@@ -21,17 +21,15 @@ AUXILIARY:
 Open a containing html file with anchor '#_checkInternalLinks' to check it for broken internal links.
 ************************************************************************/
 var convert = function(mode){
-    var getItems = function(){
+    var getItemsFromContent = function(orderedItemIds){
         var items = {};
-        var ids = [0, 0];
+        var ids = [0];
         var e = document.getElementsByClassName('content')[0].childNodes[0];
-        while(e){//if(e.nodeType == Node.COMMENT_NODE)console.log(e.data);
-            if(e.tagName)
-            {
+        while(e){//if(e.nodeType == Node.COMMENT_NODE)
+            if(e.tagName){
                 var m = e.tagName.match(/H(\d+)/i);
-                if(m)
-                {
-                    var level = parseInt(m[1]) + 1;//alert(level);
+                if(m){
+                    var level = parseInt(m[1]);
                     if(ids.length < level){
                         while(ids.length < level)
                             ids.push(0);
@@ -40,11 +38,12 @@ var convert = function(mode){
                         while(ids.length > level)
                             ids.pop();
                     }
-                    ids[ids.length - 1] += 1;//alert(ids.join('_'));                                
+                    ids[ids.length - 1] += 1;
                     var content = document.createElement('div');
                     e.parentNode.insertBefore(content, e.nextSibling);
                     var id = ids.join('_');
                     items[id] = {'header': e, 'content': content, 'id': id};
+                    orderedItemIds.push(id);
                     e = content.nextSibling;
                     continue;
                 }
@@ -60,13 +59,13 @@ var convert = function(mode){
         return items;
     };
     
-    var setModeSwithers = function(){//alert(mode+(mode == '_collapsedContent'));
+    var setModeSwithers = function(){
         var switchContainer = document.getElementsByClassName('switchContainer')[0];
         switchContainer.innerHTML = '<a class="switchLink" href="#_plainHtml" title="If the page is not displayed properly, switch to the plain html.">plain html</a>&nbsp;|&nbsp;' + (mode == '_collapsedContent' ? '<a class="switchLink" href="#_entireContent" title="Switch to the entire content mode.">entire content</a>' : '<a class="switchLink" href="#_collapsedContent" title="Switch to the collapsed content mode.">collapsed content</a>');
     };
          
     var addMenu2Page = function(){       
-        var onclickMenuItem = function(){
+        var onClickMenuItem = function(){
             for(id in items)
                 if(items[id]['menuItem'] == this){
                     window.location.href = window.location.href.replace(/#.*/, '') + '#' + id;
@@ -77,22 +76,25 @@ var convert = function(mode){
         
         var menu = document.createElement('div');
         menu.classList.add("menu");
-        for(id in items){
-            var level = id.match(/_/ig).length + 1;//alert(level);
+        for(var i = 0; i < orderedItemIds.length; i++){
+            var id = orderedItemIds[i];
             var e = document.createElement('span');
-            e.classList.add('menuItem');
-            //e.classList.add('nobreak');
+            if(/\S/.test(items[id]['content'].innerText)){
+                e.classList.add('menuItem');
+                e.addEventListener('click', onClickMenuItem);
+            }
+            else
+                e.classList.add('menuNoclickItem');
+            var level = (id.match(/_/ig) || []).length + 1;
             e.classList.add('h' + level);
             e.setAttribute('_id', id);
-            e.addEventListener('click', onclickMenuItem);
             e.innerHTML = items[id]['header'].innerText; 
             menu.appendChild(e);
             items[id]['menuItem'] = e;
-            //menu.appendChild(document.createElement('br'));
         }
         
         var menuContainer = document.createElement('div');
-        menuContainer.classList.add("menuContainer");
+        menuContainer.classList.add('menuContainer');
         var switchContainer = document.createElement('div');
         switchContainer.classList.add('switchContainer');
         menuContainer.appendChild(switchContainer);
@@ -117,7 +119,6 @@ var convert = function(mode){
     }
 
     var navigate2currentAnchor = function(){
-        //alert(window.location.href);
         var setItemVisible = function(item, visible){
             item['header'].style.display = visible ? 'block': 'none';
             item['content'].style.display = visible ? 'block': 'none';
@@ -127,43 +128,64 @@ var convert = function(mode){
             for(id in items)
                 if(items[id] != item){
                     if(mode == '_collapsedContent')
-                        setItemVisible(items[id], false);//console.log(id);
+                        setItemVisible(items[id], false);
                     else
-                        setItemVisible(items[id], true);//console.log(id);
+                        setItemVisible(items[id], true);
                     items[id]['menuItem'].classList.remove('current');
                 }
             if(item){
                 setItemVisible(item, true);
-                item['menuItem'].classList.add('current');
-                {//display also children until something is not empty
-                    var id = item['id'];
-                    var childIds = [id];
-                    var childId = id;
-                    while(!/\S/.test(items[childId]['content'].innerHTML)){
-                        childIds.push(1);
-                        childId = childIds.join('_');
-                        while(!items[childId]){
-                            childIds.pop();
-                            if(childIds.length == 1)
-                                break;
-                            childIds[childIds.length - 1] += 1;
-                            childId = childIds.join('_');
-                        }
-                        if(!items[childId])
+                item['menuItem'].classList.add('current');               
+                
+                {//scroll the menu to get the current menu item visible
+                    var menuContainer = document.getElementsByClassName('menuContainer')[0];
+                    var menuContainerRect = menuContainer.getBoundingClientRect();                
+                    
+                    var itemPosition = orderedItemIds.indexOf(item['id']);                    
+                    var upperItem;
+                    if(itemPosition > 0)
+                        upperItem = items[orderedItemIds[itemPosition - 1]];
+                    else
+                        upperItem = item;
+                    var upperItemRect = upperItem['menuItem'].getBoundingClientRect();
+                    if(upperItemRect.top < 0)
+                        menuContainer.scrollTop += upperItemRect.top;
+                    else{
+                        var lowerItem;
+                        if(itemPosition + 1 < orderedItemIds.length)
+                            lowerItem = items[orderedItemIds[itemPosition + 1]];
+                        else
+                            lowerItem = item;
+                        var lowerItemRect = lowerItem['menuItem'].getBoundingClientRect();
+                        if(lowerItemRect.bottom > menuContainerRect.bottom)
+                            menuContainer.scrollTop += lowerItemRect.bottom - menuContainerRect.bottom;
+                    }
+                    
+                    var itemRect = item['menuItem'].getBoundingClientRect();
+                    if(itemRect.left < 0)
+                        menuContainer.scrollLeft += itemRect.left;
+                    else if(itemRect.right > menuContainerRect.right)
+                        menuContainer.scrollLeft += itemRect.right - menuContainerRect.right;
+                }                
+                
+                {//display also children until some one is not empty
+                    //var level = (item['id'].match(/_/ig) || []).length + 1;
+                    var i = orderedItemIds.indexOf(item['id']);
+                    while(!/\S/.test(items[orderedItemIds[i]]['content'].innerText)){
+                        i++;
+                        if(i >= orderedItemIds.length)// || level >= (item['id'].match(/_/ig) || []).length + 1)
                             break;
-                        setItemVisible(items[childId], true);
+                        setItemVisible(items[orderedItemIds[i]], true);
                     }
                 }
                 item['header'].scrollIntoView();
             }
-            //window.scrollTo(0, 0);
-            //document.getElementsByClassName('content')[0].scrollIntoView();
         };
         
-        var move2LocalAnchor = function(item, e, anchorName, isHeader){
+        var openLocalAnchor = function(item, e, anchorName, isHeader){
             var as = e.getElementsByTagName('a');
             for(var i = 0; i < as.length; i++)
-                if(as[i].name == anchorName){  //console.log(anchorName, as[i], item['menuItem']);
+                if(as[i].name == anchorName){  
                     openItem(item);
                     if(!isHeader)
                         as[i].scrollIntoView();
@@ -199,15 +221,16 @@ var convert = function(mode){
             return true;
         }
         for(var id in items){
-            if(move2LocalAnchor(items[id], items[id]['header'], anchorName, true))
+            if(openLocalAnchor(items[id], items[id]['header'], anchorName, true))
                 return true;
-            if(move2LocalAnchor(items[id], items[id]['content'], anchorName, false))
+            if(openLocalAnchor(items[id], items[id]['content'], anchorName, false))
                 return true;
         }
         return false;
     };
 
-    var items = getItems();
+    var orderedItemIds = [];
+    var items = getItemsFromContent(orderedItemIds);
     addMenu2Page();
 
     var onHashchange = function(event){
@@ -220,20 +243,21 @@ var convert = function(mode){
 
     navigate2currentAnchor();
 
-    //it is only to prevent browser from unpleasant page jerking when navigating to an anchor which is hidden
-    var localPath = window.location.href.replace(/#.*/, '');
-    var as = document.getElementsByTagName('a');
-    for(var i = 0; i < as.length; i++){
-        if(localPath != as[i].href.replace(/#.*/, ''))
-            continue;
-        var anchorName = as[i].href.replace(/^.*#/, '')
-        if(!anchorName)
-            continue;
-        as[i].href = '#_localAnchor_' + anchorName;//this anchor does not really exists in the page and so browser will not try to go there
-    }  
+    {//it is only to prevent browser from unpleasant page jerking when navigating to an anchor which is hidden
+        var localPath = window.location.href.replace(/#.*/, '');
+        var as = document.getElementsByTagName('a');
+        for(var i = 0; i < as.length; i++){
+            if(localPath != as[i].href.replace(/#.*/, ''))
+                continue;
+            var anchorName = as[i].href.replace(/^.*#/, '')
+            if(!anchorName)
+                continue;
+            as[i].href = '#_localAnchor_' + anchorName;//this anchor does not really exists in the page and so browser will not try to go there
+        }
+    }    
 };
 
-var anchorName = window.location.href.replace(/[^#]*#?(_localAnchor_)?/, '');//alert(anchorName);
+var anchorName = window.location.href.replace(/[^#]*#?(_localAnchor_)?/, '');
 switch(anchorName){
     case '_plainHtml':
         var anchorDiv = document.createElement('div');
