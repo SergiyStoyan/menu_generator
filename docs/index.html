@@ -22,21 +22,30 @@ JS Menu Generator is a vanilla javascript that generates a dynamic menu for cont
 
 <h1>Requirements</h1>
 The HTML file must contain:
-<br>
-<br> - one &lt;div class='header'&gt;. It remains as is;
-<br> - one &lt;div class='content'&gt;. Only this one is parsed to build the menu;
-<br> - one &lt;div class='footer'&gt;. It remains as is;
-<br>
-<br>
-<p>Every header tag like &lt;h1&gt;, &lt;h2&gt;... is considered as beginning of an item which continues until another header is reached. 
-<p>Headers with higher numbers become descendants of the latest header with a lower number. That's the structure of the initial HTML file can be plain, no HTML element hierarchy is required.
+<ul>
+<li>one <a href='#header'>&lt;div class='header'&gt </a>;</li>
+<li>one <a href='#content'>&lt;div class='content'&gt </a>;</li>
+<li>one <a href='#footer'>&lt;div class='footer'&gt </a>;</li>
+</ul>
 
+ <h2><a name='header'>Header</a></h2>
+ It is not parsed.
+ <p>By default it retains its initial position but can be shifted right together with the content by setting a non-zero shiftHeaderbyMenuWidth attribute in the SCRIPT tag or in :root in menu_generator.css
+ 
+ <h2><a name='content'>Content</a></h2>
+ It is parsed to build the menu.
+<p>Every header tag H1, H2,... is considered as the beginning of an item which continues until another header is reached. 
+<p>Headers with higher numbers become descendants of the latest header with a lower number. That's the structure of the initial HTML file can be plain, no HTML element hierarchy is required.
+ 
+ <h2><a name='footer'>Footer</a></h2>
+ It is not parsed.
+ <p>By default it retains its initial position but can be shifted right together with the content by setting a non-zero shiftFooterbyMenuWidth attribute in the SCRIPT tag or in :root in menu_generator.css
 
  <h1>Usage</h1>
  In a HTML file where a menu should be created:
 <ul>
-<li>embed tag SCRIPT with menu_generator.js into the very end of HTML body;</li>
-<li>additionaly, link menu_generator.css;</li>
+<li>insert SCRIPT tag with menu_generator.js into the very end of HTML body;</li>
+<li>add style menu_generator.css;</li>
 </ul>
 <p>Investigate the source code of the very file you are reading for further clarifications.
 
@@ -71,7 +80,7 @@ Proin vulputate laoreet libero sit amet euismod. Duis at lorem venenatis, luctus
         &nbsp;2018,&nbsp;&nbsp;<a href='mailto:sergey.stoyan@gmail.com?Subject=PdfDocumentParser request' target='_top'>Sergey Stoyan</a>
 </div>
 
-<script src='menu_generator.js'></script>
+<script src='menu_generator.js' shiftHeaderbyMenuWidth='0' shiftFooterbyMenuWidth='0'></script>
 
 </body>
 </html>
