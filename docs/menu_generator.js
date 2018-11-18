@@ -1,8 +1,9 @@
 /************************************************************************
 by Sergey Stoyan, 2018
 
-This vanilla javascript generates a dynamic menu from content of the hosting html file.
-It was designed to work both online and locally. 
+This vanilla javascript generates a dynamic menu from content of a hosting html file when it is open in a web browser.
+Only this script with no dependency is required.
+It can work either online or locally. 
 Tested on Chrome and IE.
 
 REQUIREMENTS:
@@ -18,7 +19,8 @@ Embed SCRIPT tag with menu_generator.js into the very end of HTML body.
 Additionaly, link menu_generator.css
  
 AUXILIARY:
-Open a containing html file with anchor '#_checkInternalLinks' to check it for broken internal links.
+When scrolling the content, to find the currently visible item in the menu, click on its header in the content view.
+To check a containing html file for broken internal links, open it in browser with anchor '#_checkInternalLinks'.
 ************************************************************************/
 var convert = function(mode){
     var getItemsFromContent = function(orderedItemIds){
@@ -66,8 +68,16 @@ var convert = function(mode){
          
     var addMenu2Page = function(){       
         var onClickMenuItem = function(){
+            var id = this.getAttribute('_id');
+            if(!id)
+                return false;
+            window.location.href = window.location.href.replace(/#.*/, '') + '#' + id;
+            return false;
+        };      
+        
+        var onClickItemHeader = function(){
             for(id in items)
-                if(items[id]['menuItem'] == this){
+                if(items[id]['header'] == this){
                     window.location.href = window.location.href.replace(/#.*/, '') + '#' + id;
                     return false;
                 }
@@ -91,6 +101,8 @@ var convert = function(mode){
             e.innerHTML = items[id]['header'].innerText; 
             menu.appendChild(e);
             items[id]['menuItem'] = e;
+            
+            items[id]['header'].addEventListener('click', onClickItemHeader);
         }
         
         var menuContainer = document.createElement('div');
