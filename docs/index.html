@@ -22,21 +22,21 @@
 
 <h1>Requirements</h1>
 <p>The HTML file must contain:
-<ul>
-<li>one <a href='#header'>&lt;div class='header'&gt </a>;</li>
-<li>one <a href='#content'>&lt;div class='content'&gt </a>;</li>
-<li>one <a href='#footer'>&lt;div class='footer'&gt </a>;</li>
-</ul>
- 
-<h2><a name='content'>Content</a></h2>
-<p>It is parsed to build the menu.
+
+<table>
+<tr><th class='title_column'>Element</th><th>Description</th></tr>
+<tr><td class='title_column'>&lt;div class='header'&gt </td>
+<td>Header and footer are not parsed.
+<p>By default they retain their initial positions but can be moved to the content view by setting attribute shiftHeaderAndFooterToContentView in the SCRIPT tag or property --shift-header-and-footer-to-content-view in key :root in menu_generator.css to a non-zero.</td></tr>
+<tr><td class='title_column'>&lt;div class='content'&gt </td>
+<td>It is parsed to build the menu.
 <p>Every header tag H1, H2,... is considered as the beginning of an item which continues until another header is reached. 
-<p>Headers with higher numbers become descendants of the latest header with a lower number. 
+<p>Headers with higher numbers become descendants of the latest header with a lower number. </td></tr>
+<tr><td class='title_column'>&lt;div class='footer'&gt </td>
+<td>See header description.</td></tr>
+</table>
 
 
-<h2><a name='header'>Header & Footer</a></h2>
-<p>They are not parsed.
-<p>By default they retain their initial positions but can be moved to the content view by setting attribute shiftHeaderAndFooterToContentView in the SCRIPT tag or property --shift-header-and-footer-to-content-view in key :root in menu_generator.css to a non-zero.
 
 <h1>Usage</h1>
 <p>In a HTML file where a menu should be created:
