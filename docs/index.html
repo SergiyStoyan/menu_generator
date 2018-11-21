@@ -26,14 +26,14 @@
 <table>
 <tr><th class='title_column'>Element</th><th>Description</th></tr>
 <tr><td class='title_column'>&lt;div class='header'&gt </td>
-<td>Header and footer are not parsed.
-<p>By default they retain their initial positions but can be moved to the content view by setting attribute shiftHeaderAndFooterToContentView in the SCRIPT tag or property --shift-header-and-footer-to-content-view in key :root in menu_generator.css to a non-zero.</td></tr>
+<td>Not parsed.
+</td></tr>
 <tr><td class='title_column'>&lt;div class='content'&gt </td>
 <td>It is parsed to build the menu.
 <p>Every header tag H1, H2,... is considered as the beginning of an item which continues until another header is reached. 
 <p>Headers with higher numbers become descendants of the latest header with a lower number. </td></tr>
 <tr><td class='title_column'>&lt;div class='footer'&gt </td>
-<td>See header description.</td></tr>
+<td>Not parsed.</td></tr>
 </table>
 
 
@@ -44,7 +44,10 @@
 <li>insert SCRIPT tag with menu_generator.js into the very end of HTML body;</li>
 <li>add style menu_generator.css;</li>
 </ul>
-<p>To tune the appearance, edit menu_generator.css .
+<p>To tune the appearance, edit menu_generator.css.
+
+<p>By default header and footer DIV's retain their initial positions but can be moved to the content view by setting attribute shiftHeaderAndFooterToContentView in the SCRIPT tag or property --shift-header-and-footer-to-content-view in key :root in menu_generator.css to a non-zero.
+
 <p>Investigate the source code of the very file you are reading for further clarifications.
 
  
