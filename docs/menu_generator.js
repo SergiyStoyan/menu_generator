@@ -115,8 +115,7 @@ var convert = function(mode){
             menuContainer.scrollLeft += itemRect.left;
         else if(itemRect.right > menuContainerRect.right)
             menuContainer.scrollLeft += itemRect.right - menuContainerRect.right;
-    };
-                
+    };                
 
     var setMenuContainerLocation; 
                   
@@ -319,8 +318,6 @@ var convert = function(mode){
                     }
                 }  
                 
-                scrollMenuToCurrentItem(item);
-                
                 { //scroll window only until displaying footer 
                     var left, top;
                     if(anchor){
@@ -334,6 +331,8 @@ var convert = function(mode){
                     top = Math.min(footer.getBoundingClientRect().top - window.innerHeight, top);
                     window.scrollTo(window.pageXOffset + left, window.pageYOffset + top);
                 }
+                
+                scrollMenuToCurrentItem(item);
             }else{//no item to open
                 window.scrollTo(0, 0);
                 if(setMenuContainerLocation)
@@ -401,8 +400,10 @@ var convert = function(mode){
     window.addEventListener("hashchange", onHashchange, true);
 
     navigate2currentAnchor();
-    //if(mode == '_collapsedContent') //show the header when opening first time       
-    //    window.scrollTo(0, 0);
+    //if(mode == '_collapsedContent'){ //show the header when opening first time       
+        //window.scrollTo(0, 0);
+        //scrollMenuToCurrentItem();
+    //}
 
     {//it is only to prevent browser from unpleasant page jerking when navigating to an anchor which is hidden
         var localPath = window.location.href.replace(/#.*/, '');
@@ -429,7 +430,7 @@ switch(anchorName){
             return false;
         };
         anchorDiv.innerHTML = '<a class="switchLink" href="#" onclick="loadInMenuMode();" title="Switch to javascript generated document.">menu mode</a>';
-        body.insertBefore(anchorDiv, document.body.childNodes[0]);
+        document.body.insertBefore(anchorDiv, document.body.childNodes[0]);
     break;
     case '_checkInternalLinks':
         var as = document.getElementsByTagName('a');
