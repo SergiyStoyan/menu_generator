@@ -4,7 +4,7 @@ by Sergey Stoyan, 2018-2020
 
 This vanilla javascript generates a dynamic menu for content of a hosting html file when it is open in web browser.
 Only this script with no dependency is required.
-It can work either online or locally. 
+It can work either online or locally.
 Tested on Chrome and IE.
 
 
