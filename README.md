@@ -6,4 +6,4 @@ It can work either online or locally.
 It's a simple and quick way to create a documentation file with a context menu that is equally capable to work as a web and a local resource.
 Tested on Chrome and IE.
 
-[Example & Documentation](https://sergeystoyan.github.io/menu_generator/)
+[Example & Documentation](https://sergiystoyan.github.io/menu_generator/)
