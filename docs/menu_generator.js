@@ -1,10 +1,12 @@
 /************************************************************************
-Version 1.1.0
-by Sergey Stoyan, 2018-2021
+Version 1.2.2
+by Sergiy Stoyan, 2018-2023
 
-This vanilla javascript generates a dynamic menu for content of a hosting html file when it is open in web browser.
-Only this script with no dependency is required.
-It can work either online or locally.
+
+DESCRIPTION:
+This vanilla javascript generates a dynamic content menu for a html file when it is open in web browser.
+Only this script is required.
+It works either online or locally.
 Tested on Chrome and IE.
 
 
@@ -14,7 +16,7 @@ Html body must have:
 - one <div class='content'>;
 - one <div class='footer'>;
 
-Only <div class='content'> is parsed while building menu. Every H1, H2,... tag becomes an item.
+Only <div class='content'> is parsed while building menu. Each H1, H2,... tag becomes an item in the menu.
  
  
 USAGE:
@@ -28,6 +30,8 @@ When scrolling the content, to find the currently visible item in the menu, clic
 To check a containing html file for broken internal links, open it in browser with anchor '#_checkInternalLinks'.
 
 By default the header and the footer retain their initial positions but can be moved to the content view by setting attribute shiftHeaderAndFooterToContentView in the SCRIPT tag or property --shift-header-and-footer-to-content-view in key :root in menu_generator.css to a non-zero.
+
+By default the content view is resized and scrolled in such a way that the header and the footer appear out of the screen. It can be changed by setting attribute doNotHideHeaderAndFooter in the SCRIPT tag or property --do-not-hide-header-and-footer in key :root in menu_generator.css to a non-zero.
 ************************************************************************/
 var convert = function(mode){
     var parseItemsFromContent = function(items, orderedItemIds){
@@ -137,6 +141,10 @@ var convert = function(mode){
     };                
 
     var setMenuContainerLocation; 
+	
+	//configuration parameters
+	var headerAndFooterAreInContentContainer;
+	var headerAndFooterAreNotHidden;
                   
     var addMenu2Page = function(){       
         var setWindowLocationHref = function(id){
@@ -177,7 +185,7 @@ var convert = function(mode){
             var level = (id.match(/_/ig) || []).length + 1;
             e.classList.add('h' + level);
             e.setAttribute('_id', id);
-            e.innerHTML = items[id]['header'].innerText;// + items[id]['pathCaption'].outerHTML;
+            e.innerHTML = items[id]['header'].innerText;//innerHTML;// + items[id]['pathCaption'].outerHTML;
             menu.appendChild(e);
             items[id]['menuItem'] = e;
             
@@ -210,8 +218,7 @@ var convert = function(mode){
         contentContainer.style.marginLeft = menuContainer.offsetWidth;
         content.parentNode.insertBefore(contentContainer, content);
         
-        {//get headerAndFooterAreInContentContainer
-            var headerAndFooterAreInContentContainer;
+        {//get configuration parameters
             var script;
             if(document.currentScript)
                 script = document.currentScript;
@@ -221,6 +228,8 @@ var convert = function(mode){
             }
             headerAndFooterAreInContentContainer = parseInt(script.getAttribute('shiftHeaderAndFooterToContentView'))
                 || parseInt(window.getComputedStyle(document.body).getPropertyValue('--shift-header-and-footer-to-content-view'));
+            headerAndFooterAreNotHidden = parseInt(script.getAttribute('doNotHideHeaderAndFooter'))
+                || parseInt(window.getComputedStyle(document.body).getPropertyValue('--do-not-hide-header-and-footer'));
         }
         
         header = document.getElementsByClassName('header')[0];
@@ -246,13 +255,16 @@ var convert = function(mode){
                 if(!isIE && !isEdge)//works smoothly on Chrome
                     setMenuContainerLocation = function(){//move menuContainer when scrolling at header or footer
                         var hr = header.getBoundingClientRect();
+                        var fr = footer.getBoundingClientRect();
                         if(hr.bottom >= 0){
                             menuContainer.scrollTop -= menuContainer.getBoundingClientRect().top - hr.bottom;
                             menuContainer.style.top = hr.bottom;
-                            menuContainer.style.height = document.body.clientHeight/*window.innerHeight*/ - hr.bottom;//!!!window.innerHeight includes scrollbar if shown
+                            var h = document.body.clientHeight/*window.innerHeight*/ - hr.bottom;//!!!window.innerHeight includes scrollbar if shown
+							if(headerAndFooterAreNotHidden)
+								h -= fr.height;
+							menuContainer.style.height = h;
                         }
                         else{                        
-                            var fr = footer.getBoundingClientRect();
                             if(fr.top < document.body.clientHeight/*window.innerHeight*/){                           
                                 menuContainer.scrollTop -= menuContainer.getBoundingClientRect().top;
                                 menuContainer.style.top = 0;
@@ -267,12 +279,15 @@ var convert = function(mode){
                 else   //for IE, scrolling is simplified to avoid jerking             
                     setMenuContainerLocation = function(){//move menuContainer when scrolling at header or footer
                         var hr = header.getBoundingClientRect();
+                        var fr = footer.getBoundingClientRect();
                         if(hr.bottom >= 0){
                             menuContainer.style.top = hr.bottom;
-                            menuContainer.style.height = document.body.clientHeight/*window.innerHeight*/ - hr.bottom;
+                            var h = document.body.clientHeight/*window.innerHeight*/ - hr.bottom;//!!!window.innerHeight includes scrollbar if shown
+							if(headerAndFooterAreNotHidden)
+								h -= fr.height;
+							menuContainer.style.height = h;
                         }
                         else{                        
-                            var fr = footer.getBoundingClientRect();
                             if(fr.top < document.body.clientHeight/*window.innerHeight*/){      
                                 menuContainer.style.top = 0;
                                 menuContainer.style.height = fr.top;
@@ -301,7 +316,13 @@ var convert = function(mode){
                         // }
                     // };
                 window.onresize = function(){
-                    content.style.minHeight = window.innerHeight; 
+					var h = window.innerHeight;
+					if(headerAndFooterAreNotHidden){
+						var hr = header.getBoundingClientRect();
+						var fr = footer.getBoundingClientRect();
+						h -= hr.height + fr.height;
+					}
+                    content.style.minHeight = h; 
                     setMenuContainerLocation();
                     scrollMenuToCurrentItem();//?need to cure wrong shifting
                 }
@@ -360,7 +381,7 @@ var convert = function(mode){
                         top = (mode == '_collapsedContent' ? content : item['pathCaption']).getBoundingClientRect().top;
                     }
                     top = Math.min(footer.getBoundingClientRect().top - window.innerHeight, top);
-                    window.scrollTo(window.pageXOffset + left, window.pageYOffset + top);
+                    window.scrollTo(window.pageXOffset + left, headerAndFooterAreNotHidden && mode == '_collapsedContent' ? 0 : window.pageYOffset + top);
                 }
                 
                 scrollMenuToCurrentItem(item);
