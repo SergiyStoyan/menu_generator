@@ -28,7 +28,7 @@ span.h5 {margin:5 0 0 80;}
 span.h6 {margin:5 0 0 100;}
 
 .noTopMargin{
-    margin-top: 0;
+    margin-top: 0 !important;/* (!) it is necessary if you set doNotHideHeaderAndFooter=1 */
 }
 
 .contentContainer{
