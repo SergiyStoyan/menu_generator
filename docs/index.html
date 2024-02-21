@@ -7,11 +7,11 @@
 </head>
 <body>
     <div class='header'>
-        <div class='mainHeader'>JS Menu Generator 1.2</div>
+        <div class='mainHeader'>JS Menu Generator 1.3</div>
     </div>
 
     <div class='content'>
-        <h1>Overview</h1>
+        <h1><span id='Overview'>Overview</span></h1>
         <p>JS Menu Generator is a vanilla javascript that adds a dynamic menu to content of a hosting html file when it is open in web browser.
         <p>Only a signle script with no dependency is required.
         <p>It can work either online or locally.
@@ -55,6 +55,12 @@
                 <li>add style menu_generator.css;</li>
             </ul>
         <p>To tune the appearance, edit menu_generator.css.
+
+<h2>Internal Links</h2>
+The document can have internal links. It is recommended using &lt;span id=...&gt; instead of &lt;a name=...&gt;. 
+<p>
+<a href='#Overview'>Example</a>
+
 
 <h2>shiftHeaderAndFooterToContentView</h2>
         <p>By default header and footer DIV's retain their initial positions. They can be moved to the content view by setting attribute shiftHeaderAndFooterToContentView in the SCRIPT tag or property --shift-header-and-footer-to-content-view in key :root in menu_generator.css to a non-zero.
