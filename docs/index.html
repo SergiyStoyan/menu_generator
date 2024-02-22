@@ -1,6 +1,8 @@
 <html lang='EN'>
 <head>
     <title>JS Menu Generator</title>
+<!--link id='lIcon' rel="SHORTCUT ICON" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAGNJREFUSEvt1TEKgDAMQNEEPINX9zDaSbq5uXsMV7u6/myF3zkh8PjQ7NvzRfHdy1vcjEgPEzupiZZxEa0wLsJlXERr0riOdpW/xXU/kdB/OD1M7KQmWsZFtMK4CJdxEa054xq4kZQhzGskMQAAAABJRU5ErkJggg==" type="image/x-icon"-->
+
     <link rel="stylesheet" type="text/css" href="main.css">
     <link rel="stylesheet" type="text/css" href="menu_generator.css">
 
@@ -130,11 +132,16 @@ The document can have internal links. It is recommended using &lt;span id=...&gt
             Proin vulputate laoreet libero sit amet euismod. Duis at lorem venenatis, luctus elit id, posuere nulla. Vivamus eu nisi et libero ornare convallis nec non tortor. Nunc consequat, purus ac eleifend auctor, ante nulla semper eros, ac sagittis libero orci a orci. Aliquam tempus nunc quam, in porta sapien porta a. Cras venenatis efficitur erat, eget vehicula felis cursus nec. Duis et velit erat. Fusce elementum quis metus in euismod. Etiam eleifend varius odio. Nulla facilisi. Praesent ut tincidunt enim.-->
     </div>
 
-    <div class='footer'>
-        <script src='copyright.js'></script>
-        &nbsp;2018-2023,&nbsp;&nbsp;<a href="javascript:window.location.href = '&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#115;&#101;&#114;&#103;&#101;&#121;&#46;&#115;&#116;&#111;&#121;&#97;&#110;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;'" target="_top">Sergiy Stoyan</a>
-
-    </div>
+<div class='footer'>
+<script src='copyright.js'></script>
+        &nbsp;2005 - 2024&nbsp;&nbsp;<a onmouseover="javascript:this.href=getContact()" href="#" target="_top">Sergiy Stoyan</a>
+<script>
+function getContact(){
+	return "javascript:window.location.href='mail'+'to:'+'s.y.stoyan'+'@'+'gmail.com'+'?subject'+'=INQUIRY'";
+}
+</script>
+        
+</div>
 
     <script>
         if (!window.location.href.match(/\#./ig)) {
