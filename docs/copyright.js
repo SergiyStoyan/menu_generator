@@ -47,8 +47,6 @@ var copyright = {
         var blue = blue_min + this.get_random(blue_max - blue_min);
         return "#" + this.dec2hex(red) + this.dec2hex(green) + this.dec2hex(blue);
     },
-	
-	update_favicon: 1,
 
     play_: function(){
         var this_ = this;
@@ -57,17 +55,6 @@ var copyright = {
         var t = document.getElementById("copyright_td" + (this.get_random(4) + 1));
         var r = this.random_color(120, 230, 120, 230, 120, 230);
         t.style.backgroundColor = r;
-		
-		if(this.update_favicon && typeof html2canvas !== 'undefined'){//dynamic favicon if the lib exists
-			this.update_favicon = 0;
-			html2canvas(document.getElementById('copyrightT')).then(function(canvas){
-				//canvas.width="180";
-				//canvas.height="180";
-				var icon = canvas.toDataURL("image/x-icon");
-				document.getElementById('lIcon').href = icon;
-				//document.getElementById('lIcon2').href = icon;
-			});
-		};	
     },
 
     play: function(){//initializing
@@ -76,12 +63,6 @@ var copyright = {
 			var r = this.random_color(120, 230, 120, 230, 120, 230);
 			t.style.backgroundColor = r;
 		}
-		
-		/*if(typeof html2canvas !== 'undefined')//dynamic favicon if the lib exists
-			html2canvas(document.getElementById('copyrightT')).then(function(canvas) {
-				var icon = canvas.toDataURL("image/x-icon");
-				document.getElementById('lIcon').href = icon;
-		});*/
 		
 		this.play_();
     },
